@@ -20,7 +20,7 @@ createServer((page) =>
         setup: ({ App, props }) => {
             /* eslint-disable */
             // @ts-expect-error
-            global.route<RouteName> = (name, params, absolute) =>
+            global.route = <T extends string = string>(name: T, params: any, absolute: boolean) =>
                 route(name, params as any, absolute, {
                     ...page.props.ziggy,
                     location: new URL(page.props.ziggy.location),

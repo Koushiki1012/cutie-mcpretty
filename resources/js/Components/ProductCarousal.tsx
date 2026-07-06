@@ -101,7 +101,7 @@ export default function ProductCarousal({ products }: CarouselProps) {
                         <div className="mt-4 pt-2 border-t border-gray-100">
                             {product.sales_price ? (
                                 <div className="flex items-center gap-2 flex-wrap">
-                                    <span className="text-red-600 font-bold text-base">
+                                    <span className="text-red-600 font-bold text-lg">
                                         ₹{product.sales_price}
                                     </span>
                                     
@@ -114,7 +114,7 @@ export default function ProductCarousal({ products }: CarouselProps) {
                                     </span>
                                 </div>
                             ) : (
-                                <p className="text-indigo-600 font-bold text-xl">
+                                <p className="text-indigo-600 font-bold text-lg">
                                     ₹{product.price}
                                 </p>
                             )}

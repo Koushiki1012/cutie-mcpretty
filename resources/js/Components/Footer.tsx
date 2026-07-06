@@ -1,16 +1,22 @@
-import { Link } from '@inertiajs/react';
-import { useState } from 'react';
 import { User } from '@/types';
 
-interface NavbarProps {
+interface FooterProps {
     user: User | null;
 }
 
-export default function Navbar({ user }: NavbarProps) {
+export default function Footer({ user }: FooterProps) {
 
     return (
         <footer className='flex justify-center bg-gradient-to-l from-red-100 p-6' >
-            @ Copyright and Stuff 
+            <p>@ Images courtesy of{' '}
+                <a 
+                    href="https://www.pexels.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="font-semibold underline hover:text-gray-900"
+                >
+                    pexels.com
+                </a></p>
         </footer>
     );
 }

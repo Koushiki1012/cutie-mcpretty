@@ -59,7 +59,7 @@ export default function BagItemCard({ product }: BagItemProps) {
                     aria-label="Decrease quantity"
                     className="w-8 h-8 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-200 hover:text-black transition disabled:opacity-40"
                 >
-                    &minus;
+                    -
                 </button>
 
                 {/* Current Quantity Display */}
@@ -75,7 +75,7 @@ export default function BagItemCard({ product }: BagItemProps) {
                     aria-label="Increase quantity"
                     className="w-8 h-8 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-200 hover:text-black transition disabled:opacity-40"
                 >
-                    &#43;
+                    +
                 </button>
             </div>
         </div>
