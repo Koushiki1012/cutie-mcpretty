@@ -1,0 +1,32 @@
+import { Head } from '@inertiajs/react';
+import Navbar from '@/Components/Navbar';
+import Footer from '@/Components/Footer';
+import PrimaryButton from '@/Components/PrimaryButton';
+import GuestLayout from '@/Layouts/GuestLayout';
+import { Carousel } from 'flowbite-react';
+import { PageProps } from '@/types';
+import ProductCarousel, { Product } from '@/Components/ProductCarousal'; 
+
+
+interface TopsPageProps extends PageProps {
+    products: Product[];
+}
+export default function TopsPage({ auth,products }: TopsPageProps) {
+    return (
+        <div className="flex flex-col min-h-screen bg-white-50">
+                    <Head title="Welcome to Cutie McPretty" />
+                    
+                    {/* Navbar */}
+                    <Navbar user={auth.user} />
+        
+                    <main className="flex-grow max-w mx-auto p-8 pt-32">
+                        <h1 className="flex justify-center text-4xl font-bold mb-8 ">Featured Drops</h1>
+                        
+                        {/* Products */}
+                        <ProductCarousel products={products} />
+                    </main>
+                    {/* Footer */}
+                    <Footer user={auth.user}/>
+                </div>
+    );
+}
