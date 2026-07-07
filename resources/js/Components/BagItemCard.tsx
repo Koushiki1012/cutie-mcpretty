@@ -64,7 +64,7 @@ export default function BagItemCard({ product }: BagItemProps) {
 
                 {/* Current Quantity Display */}
                 <span className="w-8 text-center text-sm font-semibold text-gray-800 select-none">
-                    {loading ? '' : currentQuantity}
+                    {loading ? '...' : currentQuantity}
                 </span>
 
                 {/* Plus Button */}
