@@ -2,11 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WishlistController;
-use App\Http\Controllers\BagItemsController;  
+use App\Http\Controllers\BagController; 
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\GeminiController; 
 use App\Models\Product; 
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Gemini\Laravel\Facades\Gemini;
 
 // STOREFRONT 
 Route::get('/', function () {
@@ -16,9 +20,9 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
     ]);
 })->name('home');
+Route::post('/ask-gemini', [GeminiController::class, 'ask']);
 
-
-// TRADITIONAL ROUTES
+// TRADITIONAL
 Route::prefix('traditional')->group(function () {
     Route::get('/festive', function () {
         return Inertia::render('Traditional/Festive', [
@@ -40,7 +44,7 @@ Route::prefix('traditional')->group(function () {
 });
 
 
-// WESTERN ROUTES
+// WESTERN
 Route::prefix('western')->group(function () {
     Route::get('/tops', function () {
         return Inertia::render('Western/Tops', [
@@ -62,7 +66,7 @@ Route::prefix('western')->group(function () {
 });
 
 
-// ACCESSORIES ROUTES
+// ACCESSORIES
 Route::prefix('accessories')->group(function () {
     Route::get('/purses', function () {
         return Inertia::render('Accessories/Purses', [
@@ -84,7 +88,7 @@ Route::prefix('accessories')->group(function () {
 });
 
 
-// BONUS ROUTE
+// BONUS 
 Route::get('/bonus', function () {
     return Inertia::render('Bonus', [
         'products' => Product::where('category', 'bonus')->latest()->get()
@@ -92,37 +96,55 @@ Route::get('/bonus', function () {
 })->name('bonus');
 
 
+//WISHLIST 
+Route::middleware('auth')->group(function () {
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+
+    //wishlist action
+    Route::post('/wishlist/add/{product}', [WishlistController::class, 'toggle'])->name('wishlist.add');
+});
+
+//BAG 
+Route::middleware('auth')->group(function () {
+    Route::get('/bag', [BagController::class, 'index'])->name('bag.index');
+    
+    // bag actions
+    Route::post('/bag/add/{product}', [BagController::class, 'add'])->name('bag.add');
+    Route::patch('/bag/update/{product}', [BagController::class, 'updateQuantity'])->name('bag.update');
+    Route::delete('/bag/remove/{product}', [BagController::class, 'remove'])->name('bag.remove');
+});
+
+//CHECKOUT 
+Route::middleware('auth')->group(function () {
+    
+    // Checkout Route
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+
+    //Razorpay Route
+    Route::post('/checkout/create-order', [CheckoutController::class, 'createRazorpayOrder'])->name('checkout.create');
+    Route::post('/checkout/verify', [CheckoutController::class, 'verifyPayment'])->name('checkout.verify');
+});
+
+//SEARCHBAR
+Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+
+
+
 // AUTHENTICATED USER ROUTES
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+    
+    //Dashboard
+    Route::get('/dashboard', function (Request $request) {
+        return Inertia::render('Dashboard', [
+            'addresses' => $request->user()->addresses()->get(),
+            'orders' => $request->user()->orders()->latest()->get(), 
+        ]);
     })->name('dashboard');
 
+    //Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-
-// WISHLIST ROUTES
-Route::middleware('auth')->group(function () {
-    Route::post('/wishlist/add/{product}', [WishlistController::class, 'toggle'])
-        ->name('wishlist.add');
-});
-
-
-//BAG ROUTES
-Route::middleware('auth')->group(function () {
-    Route::get('/bag', function () {
-    return Inertia::render('Bag', [
-        'bagItems' => request()->user()->bagItems()->get(), 
-    ]);})->name('bag.view');
-    Route::post('/bag/add/{product}', [BagItemsController::class, 'toggle'])
-        ->name('bag.add');
-    Route::delete('/bag/remove/{product}', [BagItemsController::class, 'remove'])
-        ->name('bag.remove');
-    Route::patch('/bag/update/{product}', [BagItemsController::class, 'updateQuantity'])
-    ->name('bag.update');
-});
-
 require __DIR__.'/auth.php';
