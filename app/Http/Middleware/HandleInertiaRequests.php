@@ -40,11 +40,11 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'wishlistCount' => $request->user() 
-            ? $request->user()->wishlistItems()->count() 
-            : 0,
+                ? $request->user()->wishlistItems()->count() 
+                : 0,
             'bagCount' => $request->user()
-            ? $request->user()->bagItems()->count()
-            : 0,
+                ? $request->user()->bagItems()->sum('quantity') // sum is better for bags!
+                : 0,
         ];
     }
 }

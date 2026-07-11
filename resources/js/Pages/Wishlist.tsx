@@ -1,32 +1,44 @@
 import { Head } from '@inertiajs/react';
-import Navbar from '@/Components/Navbar';
-import Footer from '@/Components/Footer';
-import PrimaryButton from '@/Components/PrimaryButton';
-import GuestLayout from '@/Layouts/GuestLayout';
-import { Carousel } from 'flowbite-react';
 import { PageProps } from '@/types';
-import ProductCarousel, { Product } from '@/Components/ProductCarousal'; 
-
+import ProductCarousal, { Product } from '@/Components/ProductCarousal';
+import Navbar from '@/Components/Navbar';
+import { Link } from '@inertiajs/react';
 
 interface WishlistPageProps extends PageProps {
-    products: Product[];
+    wishlistItems: Product[];
+    userBagQuantities?: Record<number, number>; 
 }
-export default function WishlistPage({ auth,products }: WishlistPageProps) {
+
+export default function Wishlist({ auth, wishlistItems, userBagQuantities = {} }: WishlistPageProps) {
     return (
-        <div className="flex flex-col min-h-screen bg-white-50">
-                    <Head title="Welcome to Cutie McPretty" />
-                    
-                    {/* Navbar */}
-                    <Navbar user={auth.user} />
-        
-                    <main className="flex-grow max-w mx-auto p-8 pt-32">
-                        <h1 className="flex justify-center text-4xl font-bold mb-8">Featured Drops</h1>
-                        
-                        {/* Products */}
-                        <ProductCarousel products={products} />
-                    </main>
-                    {/* Footer */}
-                    <Footer user={auth.user}/>
+        <div className="min-h-screen bg-gray-50 pb-12 pt-32">
+            <Head title="My Wishlist" />
+            
+            <Navbar user={auth.user}/>
+            <main className="max-w-5xl mx-auto p-4 flex flex-col gap-8">
+                <div className="text-center">
+                    <h1 className="text-3xl font-bold mb-2">My Wishlist</h1>
+                    <p className="text-gray-500">
+                        {wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'} saved
+                    </p>
                 </div>
+
+                {wishlistItems.length > 0 ? (
+                    //product carousal
+                    <div>
+                        <ProductCarousal 
+                            products={wishlistItems} 
+                            userBagQuantities={userBagQuantities}
+                        />
+                    </div>
+                ) : (
+                    //empty wishlist
+                    <div className="text-center">
+                        <p className="text-gray-700">Browse products and add your favorites here.</p>
+                    </div>
+                )}
+                
+            </main>
+        </div>
     );
 }
