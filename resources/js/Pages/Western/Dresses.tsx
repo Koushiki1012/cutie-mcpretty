@@ -6,12 +6,14 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import { Carousel } from 'flowbite-react';
 import { PageProps } from '@/types';
 import ProductCarousel, { Product } from '@/Components/ProductCarousal'; 
+import React from 'react';
+import GeminiChat from '@/Components/GeminiChat';
 
 
-interface TopsPageProps extends PageProps {
+interface DressesPageProps extends PageProps {
     products: Product[];
 }
-export default function TopsPage({ auth,products }: TopsPageProps) {
+export default function DressesPage({ auth,products }: DressesPageProps) {
     return (
         <div className="flex flex-col min-h-screen bg-white-50">
                     <Head title="Welcome to Cutie McPretty" />
@@ -20,10 +22,11 @@ export default function TopsPage({ auth,products }: TopsPageProps) {
                     <Navbar user={auth.user} />
         
                     <main className="flex-grow max-w mx-auto p-8 pt-32">
-                        <h1 className="flex justify-center text-4xl font-bold mb-8">Featured Drops</h1>
+                        <h1 className="flex justify-center text-4xl font-bold mb-8">Dresses, Jumpsuits and Coord Sets</h1>
                         
                         {/* Products */}
                         <ProductCarousel products={products} />
+                        <GeminiChat products={products} />
                     </main>
                     {/* Footer */}
                     <Footer user={auth.user}/>
