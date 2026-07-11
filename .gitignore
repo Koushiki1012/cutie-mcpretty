@@ -28,6 +28,8 @@ Homestead.yaml
 Thumbs.db
 /database/*.sqlite
 /database/*.sqlite-journal
+
+# using .gitkeep as a placeholder to hold images
 public/images/traditional/*
 public/images/western/*
 public/images/bonus/*
