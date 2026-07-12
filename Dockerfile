@@ -93,4 +93,9 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
     sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf && \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-EXPOSE 80
+# Force Apache to listen to Railway's dynamic port
+RUN sed -i 's/Listen 80/Listen ${PORT}/' /etc/apache2/ports.conf && \
+    sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:${PORT}>/' /etc/apache2/sites-available/000-default.conf
+
+# Clear caches, run migrations, and launch Apache
+CMD php artisan config:clear && php artisan migrate --force && apache2-foreground
