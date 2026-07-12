@@ -14,7 +14,6 @@ RUN composer install \
     --no-interaction \
     --prefer-dist \
     --optimize-autoloader \
-    --ignore-platform-reqs \
     --no-scripts
 
 
@@ -41,7 +40,7 @@ RUN npm run build
 # ==========================================
 # Stage 3: Production Image
 # ==========================================
-FROM php:8.3-apache
+FROM php:8.4-apache
 
 WORKDIR /var/www/html
 
@@ -68,44 +67,51 @@ RUN apt-get update && apt-get install -y \
         opcache \
     && rm -rf /var/lib/apt/lists/*
 
-# Enable Apache rewrite module
+
+# Enable Apache rewrite
 RUN a2enmod rewrite
 
-# Copy application
+
+# Copy application source
 COPY . /var/www/html
+
 
 # Copy Composer dependencies
 COPY --from=vendor /app/vendor /var/www/html/vendor
 
-# Copy compiled frontend assets
+
+# Copy compiled Vite assets
 COPY --from=frontend /app/public/build /var/www/html/public/build
 
-# Set ownership
+
+# Set Laravel writable directories
 RUN chown -R www-data:www-data \
-    /var/www/html/storage \
-    /var/www/html/bootstrap/cache
+        /var/www/html/storage \
+        /var/www/html/bootstrap/cache && \
+    chmod -R 775 \
+        /var/www/html/storage \
+        /var/www/html/bootstrap/cache
 
-# Set write permissions
-RUN chmod -R 775 \
-    /var/www/html/storage \
-    /var/www/html/bootstrap/cache
 
-# Configure Apache to serve Laravel's public directory
+# Configure Laravel public directory as Apache DocumentRoot
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
-    /etc/apache2/sites-available/*.conf && \
+        /etc/apache2/sites-available/*.conf && \
     sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
-    /etc/apache2/apache2.conf \
-    /etc/apache2/conf-available/*.conf && \
+        /etc/apache2/apache2.conf \
+        /etc/apache2/conf-available/*.conf && \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# Brute-force delete conflicting MPMs to guarantee only mpm_prefork runs
-RUN rm -f /etc/apache2/mods-enabled/mpm_worker.load /etc/apache2/mods-enabled/mpm_event.load
 
-# Inject the runtime PORT, clear caches, migrate, and start Apache
+# Ensure only Apache prefork MPM is enabled
+RUN a2dismod mpm_event mpm_worker || true && \
+    a2enmod mpm_prefork
+
+
+# Railway dynamic PORT + Laravel startup + Apache
 CMD sed -i "s/Listen 80/Listen ${PORT:-80}/" /etc/apache2/ports.conf && \
     sed -i "s/<VirtualHost \*:80>/<VirtualHost \*:${PORT:-80}>/" /etc/apache2/sites-available/000-default.conf && \
-    php artisan config:clear && \
-    php artisan migrate --force && \
-    apache2-foreground
+    php artisan optimize:clear && \
+    php artisan migrate --force --no-interaction && \
+    exec apache2-foreground
