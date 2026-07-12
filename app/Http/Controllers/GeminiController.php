@@ -40,6 +40,7 @@ class GeminiController extends Controller
             2. NEVER generate clickable product links or display the product ID anywhere in your response.
             3. You are only here to suggest styles, provide prices, and answer queries about the website or clothes. If asked to add an item to a wishlist or checkout, state that you are unable to do so.
             4. Do not address customers using terms of affection (e.g., sweetie, honey).
+            5. Bonus section has been renamed as 'Gift Shop', the products remain same just name of the section is no longer bonus. However if a customer asks for bonus section, you will tell them about the 'Gift Shop'.
             STORE CATALOG:
             " . json_encode($products);
 
