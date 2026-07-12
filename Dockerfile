@@ -5,17 +5,15 @@ FROM composer:2 AS vendor
 
 WORKDIR /app
 
-# Copy Composer files
 COPY composer.json composer.lock ./
 
-# Install production dependencies
 RUN composer install \
     --no-dev \
     --no-interaction \
     --prefer-dist \
+    --optimize-autoloader \
     --ignore-platform-reqs \
     --no-scripts
-
 
 # ==========================================
 # Stage 2: Build Frontend Assets
@@ -24,81 +22,92 @@ FROM node:20 AS frontend
 
 WORKDIR /app
 
-# Copy application source
 COPY . .
-
-# Copy Composer dependencies for Ziggy
 COPY --from=vendor /app/vendor ./vendor
 
-# Install Node dependencies
 RUN npm install --legacy-peer-deps --no-audit --no-fund
-
-# Build Vite assets
 RUN npm run build
 
-
 # ==========================================
-# Stage 3: Production Image
+# Stage 3: Production
 # ==========================================
 FROM php:8.5.7-apache
 
 WORKDIR /var/www/html
 
-# Install PHP extensions
+# Install system packages and PHP extensions
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    zip \
-    unzip \
-    git \
-    curl \
-    libonig-dev \
-    libxml2-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+        git \
+        curl \
+        unzip \
+        zip \
+        libzip-dev \
+        libpng-dev \
+        libjpeg62-turbo-dev \
+        libfreetype6-dev \
+        libonig-dev \
+        libxml2-dev \
+    && docker-php-ext-configure gd \
+        --with-freetype \
+        --with-jpeg \
     && docker-php-ext-install \
         pdo \
         pdo_mysql \
         mbstring \
-        exif \
-        pcntl \
         bcmath \
-        gd
+        exif \
+        gd \
+        zip \
+        opcache \
+    && rm -rf /var/lib/apt/lists/*
 
-# Enable Apache rewrite
-RUN a2enmod rewrite
-
-# Copy application source
+# Copy application
 COPY . /var/www/html
 
-# Copy Composer dependencies
+# Copy vendor
 COPY --from=vendor /app/vendor /var/www/html/vendor
 
-# Copy compiled frontend assets
+# Copy built frontend assets
 COPY --from=frontend /app/public/build /var/www/html/public/build
 
-# Optimize Composer autoloader
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-RUN composer dump-autoload --optimize --no-scripts
+# Enable required Apache modules
+RUN a2enmod rewrite
 
-# Set directory permissions
-RUN chown -R www-data:www-data \
-    /var/www/html/storage \
-    /var/www/html/bootstrap/cache
+# ----------------------------------------------------
+# Resolve Apache MPM conflict
+# ----------------------------------------------------
+RUN set -eux; \
+    a2dismod mpm_event || true; \
+    a2dismod mpm_worker || true; \
+    a2enmod mpm_prefork; \
+    apache2ctl -M | grep mpm
 
-# Configure Apache
+# Configure Laravel document root
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf && \
-    sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf && \
-    echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN sed -ri \
+    -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" \
+    /etc/apache2/sites-available/*.conf \
+    /etc/apache2/apache2.conf \
+    /etc/apache2/conf-available/*.conf
 
-# Force Apache to listen to Railway's dynamic port
-RUN sed -i 's/Listen 80/Listen ${PORT}/' /etc/apache2/ports.conf && \
-    sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:${PORT}>/' /etc/apache2/sites-available/000-default.conf
+# Suppress Apache FQDN warning
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-RUN a2dismod mpm_event mpm_worker || true \
-    && a2enmod mpm_prefork || true
+# Configure Apache for Railway dynamic PORT
+RUN sed -i 's/^Listen 80$/Listen ${PORT}/' /etc/apache2/ports.conf && \
+    sed -i 's/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/' \
+    /etc/apache2/sites-available/000-default.conf
 
-# Clear caches, run migrations, and launch Apache
-CMD php artisan config:clear && php artisan migrate --force && apache2-foreground
+# Permissions
+RUN chown -R www-data:www-data \
+    storage \
+    bootstrap/cache && \
+    chmod -R 775 \
+    storage \
+    bootstrap/cache
+
+# Startup
+CMD php artisan optimize:clear && \
+    php artisan migrate --force && \
+    exec apache2-foreground
