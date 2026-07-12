@@ -15,7 +15,7 @@ export default function Wishlist({ auth, wishlistItems, userBagQuantities = {} }
             <Head title="My Wishlist" />
             
             <Navbar user={auth.user}/>
-            <main className="max-w-5xl mx-auto p-4 flex flex-col gap-8">
+            <main className="mx-auto p-4 flex flex-col gap-8">
                 <div className="text-center">
                     <h1 className="text-3xl font-bold mb-2">My Wishlist</h1>
                     <p className="text-gray-500">

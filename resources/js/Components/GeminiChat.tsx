@@ -90,8 +90,8 @@ export default function GeminiChat({ products }: GeminiChatProps) {
                             <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 <div className={`p-3 max-w-[85%] rounded-2xl ${
                                     msg.role === 'user' 
-                                    ? 'bg-black text-white rounded-br-none' 
-                                    : 'bg-white border border-red-50 shadow-sm text-gray-800 rounded-bl-none prose prose-sm'
+                                    ? 'bg-black text-white' 
+                                    : 'bg-white border border-red-50 shadow-sm text-gray-800 prose prose-sm'
                                 }`}>
                                     {msg.role === 'model' ? (
                                         <ReactMarkdown>{msg.text}</ReactMarkdown>
@@ -104,7 +104,7 @@ export default function GeminiChat({ products }: GeminiChatProps) {
                         
                         {loading && (
                             <div className="flex justify-start">
-                                <div className="p-3 bg-white border border-red-50 shadow-sm text-gray-500 rounded-2xl rounded-bl-none">
+                                <div className="p-3 bg-white border border-red-50 shadow-sm text-gray-500 rounded-2xl">
                                     Typing...
                                 </div>
                             </div>
@@ -119,7 +119,7 @@ export default function GeminiChat({ products }: GeminiChatProps) {
                                 type="text"
                                 value={prompt}
                                 onChange={(e) => setPrompt(e.target.value)}
-                                className="flex-1 p-3 border border-red-50 rounded-lg outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-300"
+                                className="flex-1 p-3 border border-red-50 rounded-lg outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-200"
                                 placeholder="Type a message..."
                                 disabled={loading}
                             />
