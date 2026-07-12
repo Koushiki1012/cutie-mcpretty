@@ -97,5 +97,8 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 RUN sed -i 's/Listen 80/Listen ${PORT}/' /etc/apache2/ports.conf && \
     sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:${PORT}>/' /etc/apache2/sites-available/000-default.conf
 
+RUN a2dismod mpm_event mpm_worker || true \
+    && a2enmod mpm_prefork || true
+
 # Clear caches, run migrations, and launch Apache
 CMD php artisan config:clear && php artisan migrate --force && apache2-foreground
