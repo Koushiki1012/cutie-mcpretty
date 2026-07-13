@@ -64,7 +64,8 @@ RUN apt-get update && apt-get install -y \
 
 
 # Apache modules
-RUN a2enmod rewrite
+RUN a2enmod rewrite setenvif && \
+    echo 'SetEnvIf X-Forwarded-Proto "https" HTTPS=on' >> /etc/apache2/apache2.conf
 
 
 # Copy application
