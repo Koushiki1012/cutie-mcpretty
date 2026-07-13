@@ -29,12 +29,3 @@ Thumbs.db
 /database/*.sqlite
 /database/*.sqlite-journal
 
-# using .gitkeep as a placeholder to hold images
-public/images/traditional/*
-public/images/western/*
-public/images/bonus/*
-public/images/accessories/*
-!public/images/traditional/.gitkeep
-!public/images/western/.gitkeep
-!public/images/bonus/.gitkeep
-!public/images/accessories/.gitkeep
