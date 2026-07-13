@@ -5,10 +5,8 @@ FROM composer:2 AS vendor
 
 WORKDIR /app
 
-# Copy Composer files
 COPY composer.json composer.lock ./
 
-# Install production dependencies
 RUN composer install \
     --no-dev \
     --no-interaction \
@@ -24,16 +22,12 @@ FROM node:20 AS frontend
 
 WORKDIR /app
 
-# Copy application source
 COPY . .
 
-# Copy Composer dependencies for Ziggy
 COPY --from=vendor /app/vendor ./vendor
 
-# Install Node dependencies
 RUN npm install --legacy-peer-deps --no-audit --no-fund
 
-# Build Vite assets
 RUN npm run build
 
 
@@ -44,7 +38,8 @@ FROM php:8.4-apache
 
 WORKDIR /var/www/html
 
-# Install system packages and PHP extensions
+
+# Install PHP extensions
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -68,23 +63,19 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 
-# Enable Apache rewrite
+# Apache modules
 RUN a2enmod rewrite
 
 
-# Copy application source
+# Copy application
 COPY . /var/www/html
 
-
-# Copy Composer dependencies
 COPY --from=vendor /app/vendor /var/www/html/vendor
 
-
-# Copy compiled Vite assets
 COPY --from=frontend /app/public/build /var/www/html/public/build
 
 
-# Set Laravel writable directories
+# Permissions
 RUN chown -R www-data:www-data \
         /var/www/html/storage \
         /var/www/html/bootstrap/cache && \
@@ -93,7 +84,7 @@ RUN chown -R www-data:www-data \
         /var/www/html/bootstrap/cache
 
 
-# Configure Laravel public directory as Apache DocumentRoot
+# Laravel public directory
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
@@ -104,15 +95,16 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 
-# Ensure only Apache prefork MPM is enabled
+# Force only prefork MPM
 RUN rm -f /etc/apache2/mods-enabled/mpm_*.load \
           /etc/apache2/mods-enabled/mpm_*.conf && \
     a2enmod mpm_prefork
 
 
-# Railway dynamic PORT + Laravel startup + Apache
-CMD sed -i "s/Listen 80/Listen ${PORT:-80}/" /etc/apache2/ports.conf && \
-    sed -i "s/<VirtualHost \*:80>/<VirtualHost \*:${PORT:-80}>/" /etc/apache2/sites-available/000-default.conf && \
-    php artisan optimize:clear && \
-    php artisan migrate --force --no-interaction && \
-    exec apache2-foreground
+# Startup script
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+
+ENTRYPOINT ["docker-entrypoint.sh"]

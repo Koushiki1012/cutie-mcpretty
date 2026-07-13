@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Gemini\Laravel\Facades\Gemini;
+use Illuminate\Support\Facades\Artisan;
+
+
+//mixed content error
+Route::get('/clear-cache', function () {
+    Artisan::call('optimize:clear');
+    return 'Cache cleared successfully!';
+});
 
 // STOREFRONT 
 Route::get('/', function () {
