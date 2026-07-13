@@ -95,10 +95,9 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 
-# Force only prefork MPM
-RUN rm -f /etc/apache2/mods-enabled/mpm_*.load \
-          /etc/apache2/mods-enabled/mpm_*.conf && \
-    a2enmod mpm_prefork
+# Configure Apache to bind to Render's dynamic $PORT
+RUN sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf && \
+    sed -i 's/:80/:${PORT}/g' /etc/apache2/sites-available/*.conf
 
 
 # Startup script
