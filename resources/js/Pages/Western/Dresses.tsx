@@ -21,8 +21,8 @@ export default function DressesPage({ auth,products }: DressesPageProps) {
                     {/* Navbar */}
                     <Navbar user={auth.user} />
         
-                    <main className="flex-grow max-w mx-auto p-8 pt-32">
-                        <h1 className="flex justify-center text-4xl font-bold mb-8">Dresses, Jumpsuits and Coord Sets</h1>
+                    <main className="flex-grow max-w mx-auto p-4 pt-[18px] md:p-8 md:pt-[28px]">
+                        <h1 className="flex justify-center text-[22.5px] md:text-[36px] text-gray-900 font-bold mb-[18px] md:mb-[28px]">Dresses, Jumpsuits and Coord Sets</h1>
                         
                         {/* Products */}
                         <ProductCarousel products={products} />

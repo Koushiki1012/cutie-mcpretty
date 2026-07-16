@@ -31,27 +31,27 @@ export default function Dashboard({ auth, addresses = [], orders = [] }: Dashboa
         <AuthenticatedLayout
             // header
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+                <h2 className="flex justify-center text-[22.5px] md:text-[36px] font-bold text-gray-900 dark:text-gray-200">
                     My Profile
                 </h2>
             }
         >
             <Head title="Dashboard" />
             {/* Dashboard content */}
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="pb-8 pt-0 md:pb-12 md:pt-0">
+                <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                     
                     {/* Main content */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         
                         {/* Order history */}
                         <div className="lg:col-span-2 space-y-4">
-                            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Order History</h3>
+                            <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">Order History</h3>
                             
                             {orders.length > 0 ? (
-                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg divide-y divide-gray-200 dark:divide-gray-700 pb-3">
+                                <div className="flex flex-col gap-4">
                                     {orders.map((order) => (
-                                        <div key={order.id} className="p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                        <div key={order.id} className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg border border-red-300 p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
                                             <div>
                                                 <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Order #{order.order_id}</p>
                                                 <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
@@ -76,12 +76,12 @@ export default function Dashboard({ auth, addresses = [], orders = [] }: Dashboa
 
                         {/* Saved addresses */}
                         <div className="space-y-4">
-                            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Saved Addresses</h3>
+                            <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">Saved Addresses</h3>
                             
                             {addresses.length > 0 ? (
                                 <div className="space-y-4">
                                     {addresses.map((address) => (
-                                        <div key={address.id} className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+                                        <div key={address.id} className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg border border-red-300 p-4 sm:p-6">
                                             <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2">{address.full_name}</h4>
                                             <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                                                 <p>{address.address}</p>

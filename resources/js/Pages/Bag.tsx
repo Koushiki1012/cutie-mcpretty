@@ -26,6 +26,7 @@ export default function Bag({ auth, bagItems }: BagPageProps) {
         return total + (itemPrice * item.pivot.quantity);
     }, 0);
 
+    //shipping cost logic, modify it
     const shipping = subtotal > 0 ? 50 : 0; 
     const grandTotal = subtotal + shipping;
 
@@ -44,13 +45,13 @@ export default function Bag({ auth, bagItems }: BagPageProps) {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 pt-32 pb-12">
+        <div className="min-h-screen bg-gray-50 pt-[18px] pb-8 md:pt-[28px] md:pb-12">
             <Head title="Shopping Bag" />
             <Navbar user={auth.user}/>
             
-            <main className="max-w-6xl mx-auto p-4 flex flex-col gap-8">
+            <main className="max-w-6xl mx-auto px-3 pb-4 md:px-4 md:pb-4 flex flex-col ">
                 {/* Header */}
-                <h1 className="flex justify-center text-3xl font-bold text-gray-900">Shopping Bag</h1>
+                <h1 className="flex justify-center text-[22.5px] md:text-[36px] font-bold text-gray-900 mb-[18px] md:mb-[28px]">Shopping Bag</h1>
                 {bagItems.length > 0 ? (
                     <div className="flex flex-col lg:flex-row gap-8">
                         
@@ -59,13 +60,13 @@ export default function Bag({ auth, bagItems }: BagPageProps) {
 
                             {/* Product card */}
                             {bagItems.map((item) => (
-                                <div key={item.id} className="relative flex items-center gap-4 p-4 bg-white border border-rose-300 rounded-lg shadow-sm">
+                                <div key={item.id} className="relative flex flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white border border-rose-300 rounded-lg shadow-sm">
                                     
                                     <button 
                                         onClick={() => handleRemove(item.id)}
-                                        className="absolute top-4 right-4 text-gray-400 hover:text-red-600"
+                                        className="absolute top-2 right-2 sm:top-4 sm:right-4 text-gray-400 hover:text-red-600 p-1 sm:p-0"
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 sm:w-5 sm:h-5">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                                         </svg>
                                     </button>
@@ -73,25 +74,25 @@ export default function Bag({ auth, bagItems }: BagPageProps) {
                                     <img 
                                         src={item.images?.[0] || '/placeholder.png'} 
                                         alt={item.name} 
-                                        className="w-24 h-32 rounded object-cover bg-gray-100 shrink-0" 
+                                        className="w-24 h-28 sm:w-24 sm:h-32 rounded object-cover bg-gray-100 shrink-0" 
                                     />
 
-                                    <div className="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pr-6">
-                                        <div>
-                                            <h3 className="font-semibold text-gray-800 line-clamp-2">{item.name}</h3>
-                                            <p className="mt-1 font-bold">
+                                    <div className="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pr-4 sm:pr-8 w-full mt-1 sm:mt-0">
+                                        <div className="flex flex-col justify-start">
+                                            <h3 className="font-semibold text-gray-800 line-clamp-2 text-sm sm:text-base">{item.name}</h3>
+                                            <p className="mt-1 font-bold text-sm sm:text-base">
                                                 ₹{item.sales_price || item.price}
                                                 {item.sales_price && (
-                                                    <span className="text-sm text-gray-400 line-through ml-2">₹{item.price}</span>
+                                                    <span className="text-xs sm:text-sm text-gray-400 line-through ml-2">₹{item.price}</span>
                                                 )}
                                             </p>
                                         </div>
 
                                         {/* Quantity of each */}
-                                        <div className="flex items-center bg-white border border-gray-300 rounded-md shrink-0">
-                                            <button onClick={() => handleUpdateQuantity(item.id, item.pivot.quantity - 1)} className="w-8 h-8 font-bold hover:bg-gray-100">&minus;</button>
-                                            <span className="w-10 text-center text-sm font-semibold">{item.pivot.quantity}</span>
-                                            <button onClick={() => handleUpdateQuantity(item.id, item.pivot.quantity + 1)} className="w-8 h-8 font-bold hover:bg-gray-100">&#43;</button>
+                                        <div className="flex items-center bg-white border border-gray-300 rounded-md shrink-0 w-fit mt-1 sm:mt-0">
+                                            <button onClick={() => handleUpdateQuantity(item.id, item.pivot.quantity - 1)} className="w-7 sm:w-8 h-7 sm:h-8 flex items-center justify-center font-bold hover:bg-gray-100">&minus;</button>
+                                            <span className="w-8 sm:w-10 text-center text-sm font-semibold flex items-center justify-center h-7 sm:h-8">{item.pivot.quantity}</span>
+                                            <button onClick={() => handleUpdateQuantity(item.id, item.pivot.quantity + 1)} className="w-7 sm:w-8 h-7 sm:h-8 flex items-center justify-center font-bold hover:bg-gray-100">&#43;</button>
                                         </div>
 
                                         <div className="hidden sm:block text-right w-24 font-bold shrink-0">
@@ -104,10 +105,10 @@ export default function Bag({ auth, bagItems }: BagPageProps) {
 
                         {/* Order summary */}
                         <div className="lg:w-96 shrink-0">
-                            <div className="sticky top-28 p-6 bg-white border border-rose-300 rounded-lg shadow-sm flex flex-col gap-4">
-                                <h2 className="text-xl font-bold">Order Summary</h2>
+                            <div className="sticky top-24 md:top-28 p-4 md:p-6 bg-white border border-rose-300 rounded-lg shadow-sm flex flex-col gap-3 md:gap-4">
+                                <h2 className="text-lg md:text-xl font-bold">Order Summary</h2>
                                 
-                                <div className="flex flex-col gap-2 text-sm text-gray-600 border-b pb-4">
+                                <div className="flex flex-col gap-2 text-xs md:text-sm text-gray-600 border-b pb-3 md:pb-4">
                                     <div className="flex justify-between">
                                         <span>Subtotal ({bagItems.reduce((acc, item) => acc + item.pivot.quantity, 0)} items)</span>
                                         <span className="font-medium text-gray-900">₹{subtotal}</span>
@@ -118,27 +119,28 @@ export default function Bag({ auth, bagItems }: BagPageProps) {
                                     </div>
                                 </div>
 
-                                <div className="flex justify-between font-bold text-lg">
+                                <div className="flex justify-between font-bold text-base md:text-lg">
                                     <span>Total</span>
                                     <span>₹{grandTotal}</span>
                                 </div>
 
                                 {/* Checkout button */}
                                 <Link href={route('checkout.index')}>
-                                    <PrimaryButton className="w-full justify-center">Proceed to Checkout</PrimaryButton>
+                                    <PrimaryButton className="w-full justify-center text-sm md:text-base py-2.5 md:py-3">Proceed to Checkout</PrimaryButton>
                                 </Link>
 
-                                <p className="text-xs text-center text-gray-400">Secure checkout. Payment options on next step.</p>
+                                <p className="text-[10px] md:text-xs text-center text-gray-400">Secure checkout. Payment options on next step.</p>
                             </div>
                         </div>
 
                     </div>
                 ) : (
                     /* Empty Bag */
-                    <div className="text-center">
-                        
-                        <p className="text-gray-700">Looks like you haven't added anything to your bag yet.</p>
-                        
+                    <div className="text-center py-10 md:py-20 bg-white border border-rose-200 rounded-lg shadow-sm">
+                        <p className="text-sm md:text-base text-gray-500 mb-4">Looks like you haven't added anything to your bag yet.</p>
+                        <Link href="/">
+                            <PrimaryButton className="text-xs md:text-sm">Continue Shopping</PrimaryButton>
+                        </Link>
                     </div>
                 )}
             </main>

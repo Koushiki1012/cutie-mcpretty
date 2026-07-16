@@ -117,12 +117,12 @@ export default function CheckoutIndex({ auth, bagItems, addresses = [] }: PagePr
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-12 pt-24">
+        <div className="min-h-screen bg-gray-50 pb-8 pt-20 md:pb-12 md:pt-24">
             <Head title="Checkout" />
             
             <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
-                <h1 className="text-3xl font-bold text-gray-900 mb-8">Secure Checkout</h1>
+                <h1 className="text-[22.5px] md:text-[36px] font-bold text-gray-900 mb-[18px] md:mb-[28px]">Secure Checkout</h1>
 
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Shipping details */}

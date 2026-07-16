@@ -11,14 +11,14 @@ interface WishlistPageProps extends PageProps {
 
 export default function Wishlist({ auth, wishlistItems, userBagQuantities = {} }: WishlistPageProps) {
     return (
-        <div className="min-h-screen bg-gray-50 pb-12 pt-32">
+        <div className="min-h-screen bg-gray-50 pb-8 pt-[18px] md:pb-12 md:pt-[28px]">
             <Head title="My Wishlist" />
             
             <Navbar user={auth.user}/>
-            <main className="mx-auto p-4 flex flex-col gap-8">
+            <main className="max-w-6xl mx-auto px-3 pb-4 md:px-4 md:pb-4 flex flex-col ">
                 <div className="text-center">
-                    <h1 className="text-3xl font-bold mb-2">My Wishlist</h1>
-                    <p className="text-gray-500">
+                    <h1 className="flex justify-center text-[22.5px] md:text-[36px] font-bold text-gray-900 mb-[18px] md:mb-[28px]">My Wishlist</h1>
+                    <p className="text-sm md:text-base text-gray-500">
                         {wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'} saved
                     </p>
                 </div>
@@ -34,7 +34,7 @@ export default function Wishlist({ auth, wishlistItems, userBagQuantities = {} }
                 ) : (
                     //empty wishlist
                     <div className="text-center">
-                        <p className="text-gray-700">Browse products and add your favorites here.</p>
+                        <p className="text-sm md:text-base text-gray-700">Browse products and add your favorites here.</p>
                     </div>
                 )}
                 

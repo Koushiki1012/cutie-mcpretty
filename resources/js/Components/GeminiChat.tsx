@@ -62,33 +62,33 @@ export default function GeminiChat({ products }: GeminiChatProps) {
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-50">
+        <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
             
             {isOpen && (
-                <div className="flex flex-col w-[360px] h-[600px] mb-4 border border-red-200 rounded-xl shadow-xl bg-white">
+                <div className="flex flex-col w-[280px] sm:w-[360px] h-[55vh] sm:h-[600px] mb-4 border border-red-200 rounded-xl shadow-xl bg-white">
                     
                     {/* Header with Close Button */}
-                    <div className="p-4 border-b border-red-50 bg-red-200 rounded-t-xl flex justify-between items-center">
-                        <h2 className="text-xl font-bold text-gray-800">Ask Rachel</h2>
+                    <div className="p-2 px-3 md:p-4 border-b border-red-50 bg-red-200 rounded-t-xl flex justify-between items-center">
+                        <h2 className="text-base md:text-xl font-bold text-gray-800">Ask Rachel</h2>
                         <button 
                             onClick={() => setIsOpen(false)}
-                            className="text-gray-600 hover:text-black font-bold text-xl leading-none"
+                            className="text-gray-600 hover:text-black font-bold text-base md:text-xl leading-none"
                         >
                             ×
                         </button>
                     </div>
                     
                     {/* Chat History Window */}
-                    <div className="flex-1 p-4 overflow-y-auto bg-white space-y-4">
+                    <div className="flex-1 p-2 md:p-4 overflow-y-auto bg-white space-y-2 md:space-y-4 text-xs md:text-base">
                         {messages.length === 0 && (
-                            <p className="text-gray-400 text-center mt-4">
+                            <p className="text-gray-400 text-center mt-2 md:mt-4">
                                 Hi! I'm Rachel. What are we shopping for today?
                             </p>
                         )}
                         
                         {messages.map((msg, index) => (
                             <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`p-3 max-w-[85%] rounded-2xl ${
+                                <div className={`p-1.5 px-2.5 md:p-3 max-w-[85%] rounded-2xl ${
                                     msg.role === 'user' 
                                     ? 'bg-black text-white' 
                                     : 'bg-white border border-red-50 shadow-sm text-gray-800 prose prose-sm'
@@ -104,7 +104,7 @@ export default function GeminiChat({ products }: GeminiChatProps) {
                         
                         {loading && (
                             <div className="flex justify-start">
-                                <div className="p-3 bg-white border border-red-50 shadow-sm text-gray-500 rounded-2xl">
+                                <div className="p-2 md:p-3 bg-white border border-red-50 shadow-sm text-gray-500 rounded-2xl">
                                     Typing...
                                 </div>
                             </div>
@@ -113,20 +113,20 @@ export default function GeminiChat({ products }: GeminiChatProps) {
                     </div>
 
                     {/* Input Form */}
-                    <div className="p-4 border-t border-red-50 bg-white rounded-b-xl">
-                        <form onSubmit={handleSubmit} className="flex gap-2">
+                    <div className="p-2 md:p-4 border-t border-red-50 bg-white rounded-b-xl">
+                        <form onSubmit={handleSubmit} className="flex gap-1 md:gap-2 text-[11px] md:text-base">
                             <input 
                                 type="text"
                                 value={prompt}
                                 onChange={(e) => setPrompt(e.target.value)}
-                                className="flex-1 p-3 border border-red-50 rounded-lg outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-200"
+                                className="flex-1 p-1 px-2 md:p-3 border border-red-50 rounded-lg outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-200"
                                 placeholder="Type a message..."
                                 disabled={loading}
                             />
                             <button 
                                 type="submit" 
                                 disabled={loading || !prompt.trim()}
-                                className="px-6 py-3 bg-black text-white font-medium rounded-lg disabled:bg-gray-400 hover:bg-gray-800"
+                                className="px-2.5 py-1 md:px-6 md:py-3 bg-black text-white font-medium rounded-lg disabled:bg-gray-400 hover:bg-gray-800"
                             >
                                 Send
                             </button>
@@ -139,12 +139,12 @@ export default function GeminiChat({ products }: GeminiChatProps) {
             {!isOpen && (
                 <button 
                     onClick={() => setIsOpen(true)}
-                    className="w-14 h-14 bg-red-300 rounded-full"
+                    className="w-10 h-10 md:w-14 md:h-14 bg-red-300 rounded-full shadow-lg"
                 >
                     <span className="text-3xl"><img 
                         src="/robotics.png" 
                         alt="ChatBot Icon" 
-                        className="w-full h-full object-contain p-2" 
+                        className="w-full h-full object-contain p-1.5 md:p-2" 
                     /></span>
                 </button>
             )}
