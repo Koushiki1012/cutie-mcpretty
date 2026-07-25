@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Gemini\Laravel\Facades\Gemini;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use App\Models\Product; 
 use Gemini\Data\Content;
 use Gemini\Enums\Role;
@@ -18,43 +19,48 @@ class GeminiController extends Controller
         ]);
 
         try {
-             // Fetch limited product details to save tokens
-            $products = Product::select(
-                'name',
-                'price',
-                'sales_price',
-                'images'
-            )->get();
+            // Compact catalog cached for 1 hour — only first image, short keys
+            $products = Cache::remember('gemini_catalog', now()->addHours(1), function () {
+                return Product::select('name', 'price', 'sales_price', 'images', 'category', 'subcategory')
+                    ->get()
+                    ->map(fn($p) => [
+                        'name' => $p->name,
+                        'price' => $p->price,
+                        'sale' => $p->sales_price,
+                        'cat' => $p->category . '/' . $p->subcategory,
+                        'img' => $p->images[0] ?? null,
+                    ]);
+            });
 
-            // Grab the history
+            // Grab the history — keep last 3 back and forth as context
             $history = $request->input('history', []); 
-            $recentHistory = array_slice($history, -6);//only keep last 3 back and forth as context
+            $recentHistory = array_slice($history, -6);
 
-            $systemInstruction = "You are Rachel the shopping assistant at Cutie McPretty, you are named after the beloved character Rachel Green from friends. Your job is to help customers find products, compare items, and answer questions.
-            
-            IMPORTANT FORMATTING RULES:
-            1. When recommending a product, your response MUST strictly follow this exact 3-line format. Add absolutely nothing else to the response:
-                * Line 1 (Description): A brief product detail that confirms availability. This line MUST be strictly between 10 to 15 words.
-                * Line 2 (Image): The product's first image on its own separate line using this exact markdown: ![Product Name](IMAGE_URL). 
-                * Line 3 (Price): The exact price details.
-            2. NEVER generate clickable product links or display the product ID anywhere in your response.
-            3. You are only here to suggest styles, provide prices, and answer queries about the website or clothes. If asked to add an item to a wishlist or checkout, state that you are unable to do so.
-            4. Do not address customers using terms of affection (e.g., sweetie, honey).
-            5. Bonus section has been renamed as 'Gift Shop', the products remain same just name of the section is no longer bonus. However if a customer asks for bonus section, you will tell them about the 'Gift Shop'.
-            STORE CATALOG:
-            " . json_encode($products);
+            $systemInstruction = "You are Rachel, Cutie McPretty's shopping assistant (named after Rachel Green).
+Help customers find products, compare items, and answer questions.
+
+RULES:
+1. Product recommendations must be exactly 3 lines:
+   - Line 1: Brief detail (10-15 words)
+   - Line 2: ![Product Name](IMAGE_URL)
+   - Line 3: Price details
+2. Never generate product links or show product IDs.
+3. Cannot add items to wishlist/checkout — say so if asked.
+4. Don't use terms of affection (sweetie, honey, etc).
+5. 'Bonus' section is now 'Gift Shop' — same products, new name.
+
+CATALOG:
+" . json_encode($products);
 
             $chatHistory = [];
-            foreach ($history as $message) {
-
+            foreach ($recentHistory as $message) {
                 $role = $message['role'] === 'user' ? Role::USER : Role::MODEL;
                 $chatHistory[] = Content::parse($message['text'], $role);
             }
 
-
             $chat = Gemini::generativeModel('gemini-2.5-flash')
                 ->withSystemInstruction(Content::parse($systemInstruction))
-                ->startChat($chatHistory); // Pass the context here!
+                ->startChat($chatHistory);
 
             $result = $chat->sendMessage($request->input('prompt'));
 
