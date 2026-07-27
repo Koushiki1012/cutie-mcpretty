@@ -3,7 +3,6 @@ import { PageProps } from '@/types';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
-import StickyHeader from '@/Components/StickyHeader';
 import axios from 'axios';
 
 interface BagItem {
@@ -123,7 +122,7 @@ export default function CheckoutIndex({ auth, bagItems, addresses = [] }: PagePr
             
             <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-[18px] md:pt-[28px]">
                 {/* Header */}
-                <StickyHeader title="Secure Checkout" />
+                <h1 className="text-[22.5px] md:text-[36px] font-bold text-gray-900 mb-[18px] md:mb-[28px]">Secure Checkout</h1>
 
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Shipping details */}

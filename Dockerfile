@@ -96,7 +96,8 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 
-# Configure Apache to bind to Render's dynamic $PORT
+# Configure Apache to bind to Render's dynamic $PORT (defaulting to 80 if not set)
+ENV PORT=80
 RUN sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf && \
     sed -i 's/:80/:${PORT}/g' /etc/apache2/sites-available/*.conf
 
