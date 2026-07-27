@@ -7,6 +7,7 @@ import { Carousel } from 'flowbite-react';
 import { PageProps } from '@/types';
 import ProductCarousel, { Product } from '@/Components/ProductCarousal'; 
 import React from 'react';
+import StickyHeader from '@/Components/StickyHeader';
 import GeminiChat from '@/Components/GeminiChat';
 
 
@@ -22,7 +23,7 @@ export default function BottomsPage({ auth,products }: BottomsPageProps) {
                     <Navbar user={auth.user} />
         
                     <main className="flex-grow max-w mx-auto p-4 pt-[18px] md:p-8 md:pt-[28px]">
-                        <h1 className="flex justify-center text-[22.5px] md:text-[36px] text-gray-900 font-bold mb-[18px] md:mb-[28px]">Skirts and Pants</h1>
+                        <StickyHeader title="Skirts and Pants" bgColor="bg-white/95" />
                         
                         {/* Products */}
                         <ProductCarousel products={products} />

@@ -3,6 +3,7 @@ import { PageProps } from '@/types';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
+import StickyHeader from '@/Components/StickyHeader';
 import axios from 'axios';
 
 interface BagItem {
@@ -117,12 +118,12 @@ export default function CheckoutIndex({ auth, bagItems, addresses = [] }: PagePr
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-8 pt-20 md:pb-12 md:pt-24">
+        <div className="min-h-screen bg-gray-50 pb-8 md:pb-12">
             <Head title="Checkout" />
             
-            <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-[18px] md:pt-[28px]">
                 {/* Header */}
-                <h1 className="text-[22.5px] md:text-[36px] font-bold text-gray-900 mb-[18px] md:mb-[28px]">Secure Checkout</h1>
+                <StickyHeader title="Secure Checkout" />
 
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Shipping details */}
@@ -197,7 +198,7 @@ export default function CheckoutIndex({ auth, bagItems, addresses = [] }: PagePr
 
                     {/* Order summary */}
                     <div className="lg:w-96 flex-shrink-0">
-                        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 sticky top-28">
+                        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 sticky top-[180px] md:top-[220px]">
                             <h2 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h2>
                             
                             <div className="space-y-3 border-b border-gray-100 pb-4 mb-4 max-h-60 overflow-y-auto">

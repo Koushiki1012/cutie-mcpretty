@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { User } from '@/types';
 import { router } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
@@ -31,6 +31,18 @@ export default function Navbar({ user }: NavbarProps) {
     const { url } = usePage();
 
     const [searchQuery, setSearchQuery] = useState('');
+    const [navbarHeight, setNavbarHeight] = useState(135);
+
+    useEffect(() => {
+        const updateHeight = () => {
+            const navbar = document.getElementById('main-navbar');
+            if (navbar) setNavbarHeight(navbar.offsetHeight);
+        };
+        updateHeight();
+        setTimeout(updateHeight, 100);
+        window.addEventListener('resize', updateHeight);
+        return () => window.removeEventListener('resize', updateHeight);
+    }, []);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -44,7 +56,8 @@ export default function Navbar({ user }: NavbarProps) {
 
     return (
         <>
-            <div className="sticky top-0 z-50 w-full flex flex-col shadow-sm">
+            <div style={{ height: `${navbarHeight}px` }} className="w-full shrink-0" aria-hidden="true" />
+            <div id="main-navbar" className="fixed top-0 left-0 right-0 z-50 w-full flex flex-col shadow-sm">
                 <header className='w-full flex justify-between items-center bg-gradient-to-r from-red-100 to-white p-4 md:p-6'>
                     
                     {/* Left: Logo + Hamburger (mobile) + Desktop Nav */}
@@ -78,7 +91,7 @@ export default function Navbar({ user }: NavbarProps) {
                                 </button>
                                 
                                 {isTraditionalOpen && (
-                                    <div className='absolute top-full left-1/2 -translate-x-1/2 w-36 bg-white border border-gray-100 shadow-lg rounded-md overflow-hidden'>
+                                    <div className='absolute top-full left-1/2 -translate-x-1/2 w-36 bg-white border border-gray-100 shadow-lg rounded-md overflow-hidden z-50'>
                                         <Link href='/traditional/festive' className='block px-4 py-3 text-xs text-gray-600 hover:bg-gray-50 hover:text-black'>Festive Kurta Sets</Link>
                                         <Link href='/traditional/classics' className='block px-4 py-3 text-xs text-gray-600 hover:bg-gray-50 hover:text-black'>Cotton Kurta Sets</Link>
                                         <Link href='/traditional/fusion' className='block px-4 py-3 text-xs text-gray-600 hover:bg-gray-50 hover:text-black'>Short Kurtis</Link>
@@ -95,7 +108,7 @@ export default function Navbar({ user }: NavbarProps) {
                                 </button>
                                 
                                 {isWesternOpen && (
-                                    <div className='absolute top-full left-1/2 -translate-x-1/2 w-36 bg-white border border-gray-100 shadow-lg rounded-md overflow-hidden'>
+                                    <div className='absolute top-full left-1/2 -translate-x-1/2 w-36 bg-white border border-gray-100 shadow-lg rounded-md overflow-hidden z-50'>
                                         <Link href='/western/tops' className='block px-4 py-3 text-xs text-gray-600 hover:bg-gray-50 hover:text-black'>Shirts & Tshirts</Link>
                                         <Link href='/western/dresses' className='block px-4 py-3 text-xs text-gray-600 hover:bg-gray-50 hover:text-black'>Dresses & more</Link>
                                         <Link href='/western/bottoms' className='block px-4 py-3 text-xs text-gray-600 hover:bg-gray-50 hover:text-black'>Skirts & Pants</Link>
@@ -112,7 +125,7 @@ export default function Navbar({ user }: NavbarProps) {
                                 </button>
                                 
                                 {isAccessoriesOpen && (
-                                    <div className='absolute top-full left-1/2 -translate-x-1/2 w-36 bg-white border border-gray-100 shadow-lg rounded-md overflow-hidden'>
+                                    <div className='absolute top-full left-1/2 -translate-x-1/2 w-36 bg-white border border-gray-100 shadow-lg rounded-md overflow-hidden z-50'>
                                         <Link href='/accessories/purses' className='block px-4 py-3 text-xs text-gray-600 hover:bg-gray-50 hover:text-black'>Purses</Link>
                                         <Link href='/accessories/footwear' className='block px-4 py-3 text-xs text-gray-600 hover:bg-gray-50 hover:text-black'>Footwear</Link>
                                         <Link href='/accessories/scarves' className='block px-4 py-3 text-xs text-gray-600 hover:bg-gray-50 hover:text-black'>Scarves</Link>
@@ -204,7 +217,7 @@ export default function Navbar({ user }: NavbarProps) {
                                         </button>
                                         
                                         {isProfileOpen && (
-                                            <div className='absolute top-full right-0 w-24 bg-white border border-gray-100 shadow-lg rounded-md overflow-hidden'>
+                                            <div className='absolute top-full right-0 w-24 bg-white border border-gray-100 shadow-lg rounded-md overflow-hidden z-50'>
                                                 <Link href={route('login')} className='block px-4 py-3 text-xs text-gray-600 hover:bg-gray-50 hover:text-black'>Log in</Link>
                                                 <Link href={route('register')} className='block px-4 py-3 text-xs text-gray-600 hover:bg-gray-50 hover:text-black'>Sign up</Link>
                                             </div>

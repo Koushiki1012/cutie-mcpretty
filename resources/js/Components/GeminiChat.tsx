@@ -114,24 +114,23 @@ export default function GeminiChat({ products }: GeminiChatProps) {
 
                     {/* Input Form */}
                     <div className="p-2 md:p-4 border-t border-red-50 bg-white rounded-b-xl">
-                        <form onSubmit={handleSubmit} className="flex gap-1 md:gap-2 text-[11px] md:text-base">
-                            <input 
-                                type="text"
-                                value={prompt}
-                                onChange={(e) => setPrompt(e.target.value)}
-                                className="flex-1 p-1 px-2 md:p-3 border border-red-50 rounded-lg outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-200"
-                                placeholder="Type a message..."
-                                disabled={loading}
-                            />
-                            <button 
-                                type="submit" 
-                                disabled={loading || !prompt.trim()}
-                                className="px-2.5 py-1 md:px-6 md:py-3 bg-black text-white font-medium rounded-lg disabled:bg-gray-400 hover:bg-gray-800"
-                            >
-                                Send
-                            </button>
-                        </form>
-                    </div>
+    <form onSubmit={handleSubmit} className="flex gap-1 md:gap-2 text-[13px] md:text-base">
+        <input
+            type="text"
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+className="flex-1 p-1 px-2 md:p-3 border border-red-50 rounded-lg outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-200 text-xs md:text-base placeholder:text-xs md:placeholder:text-base"            placeholder="Type a message..."
+            disabled={loading}
+        />
+        <button 
+            type="submit" 
+            disabled={loading || !prompt.trim()}
+            className="px-2.5 py-1 md:px-6 md:py-3 bg-black text-white font-medium rounded-lg disabled:bg-gray-400 hover:bg-gray-800"
+        >
+            Send
+        </button>
+    </form>
+</div>
                 </div>
             )}
 

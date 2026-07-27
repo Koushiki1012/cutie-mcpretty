@@ -2,6 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import ProductCarousal from '@/Components/ProductCarousal';
 import Navbar from '@/Components/Navbar';
+import StickyHeader from '@/Components/StickyHeader';
 
 interface Product {
     id: number;
@@ -22,18 +23,21 @@ interface SearchProps extends PageProps {
 
 export default function Search({ auth,products, searchQuery }: SearchProps) {
     return (
-        <div className="min-h-screen bg-white pt-[18px] pb-6 md:pt-[28px]">
+        <div className="min-h-screen bg-white pb-6">
             <Head title={`Search Results for "${searchQuery}"`} />
             <Navbar user={auth.user} />
 
             {/* page contents */}
-            <main className="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="mb-10 text-center">
-                    <h1 className="flex justify-center text-[22.5px] md:text-[36px] font-bold text-gray-900 mb-[18px] md:mb-[28px]">Search Results</h1>
-                    <p className="text-sm md:text-base text-gray-500">
-                        {products.length} {products.length === 1 ? 'result' : 'results'} found for <span className="text-gray-900 font-bold">"{searchQuery}"</span>
-                    </p>
-                </div>
+            <main className="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8 pt-[18px] md:pt-[28px]">
+                <StickyHeader 
+                    title="Search Results" 
+                    bgColor="bg-white/95"
+                    subtitle={
+                        <p className="text-sm md:text-base text-gray-500">
+                            {products.length} {products.length === 1 ? 'result' : 'results'} found for <span className="text-gray-900 font-bold">"{searchQuery}"</span>
+                        </p>
+                    }
+                />
 
                 {products.length > 0 ? (
                     //display products

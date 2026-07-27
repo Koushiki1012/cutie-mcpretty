@@ -23,7 +23,8 @@ Route::get('/clear-cache', function () {
 // STOREFRONT 
 Route::get('/', function () {
     return Inertia::render('Storefront', [
-        'products' => Product::all(),
+        'saleProducts' => Product::whereNotNull('sales_price')->latest()->take(10)->get(),
+        'newProducts' => Product::latest()->take(10)->get(),
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
     ]);

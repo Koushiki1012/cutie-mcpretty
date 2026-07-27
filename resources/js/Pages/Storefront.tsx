@@ -7,6 +7,8 @@ import { PageProps } from '@/types';
 import { Carousel } from 'flowbite-react';
 import React from 'react';
 import GeminiChat from '@/Components/GeminiChat';
+
+import ProductCarousal from '@/Components/ProductCarousal';
 interface Product {
     id: number;
     name: string;
@@ -19,10 +21,11 @@ interface CarouselProps{
     products: Product[];
 } 
 interface StorefrontProps extends PageProps {
-    products: Product[];
+    saleProducts: Product[];
+    newProducts: Product[];
 }
 
-export default function Storefront({ auth, products }: StorefrontProps) {
+export default function Storefront({ auth, saleProducts, newProducts }: StorefrontProps) {
     return (
         <div className="flex flex-col min-h-screen bg-white-50">
             <Head title="Welcome to Cutie McPretty" />
@@ -46,9 +49,17 @@ export default function Storefront({ auth, products }: StorefrontProps) {
                         />
                     </Carousel>
                 </div>
+
+                <div className="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 className="text-[20px] md:text-[36px] font-bold text-gray-900 mb-[16px] md:mb-[28px] text-center">Items on Sale</h2>
+                    <ProductCarousal products={saleProducts} />
+                    
+                    <h2 className="text-[20px] md:text-[36px] font-bold text-gray-900 mt-16 mb-[16px] md:mb-[28px] text-center">New Additions</h2>
+                    <ProductCarousal products={newProducts} />
+                </div>
                 
                 {/* Gemini Chat */}
-                <GeminiChat products={products} />
+                <GeminiChat products={newProducts} />
                 
             </main>
             {/* Footer */}

@@ -2,6 +2,7 @@ import { Head, router, Link } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import PrimaryButton from '@/Components/PrimaryButton';
 import Navbar from '@/Components/Navbar';
+import StickyHeader from '@/Components/StickyHeader';
 
 interface BagItem {
     id: number;
@@ -45,13 +46,13 @@ export default function Bag({ auth, bagItems }: BagPageProps) {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 pt-[18px] pb-8 md:pt-[28px] md:pb-12">
+        <div className="min-h-screen bg-gray-50 pb-8 md:pb-12">
             <Head title="Shopping Bag" />
             <Navbar user={auth.user}/>
             
-            <main className="max-w-6xl mx-auto px-3 pb-4 md:px-4 md:pb-4 flex flex-col ">
+            <main className="max-w-6xl mx-auto px-3 pb-4 md:px-4 md:pb-4 flex flex-col pt-[18px] md:pt-[28px]">
                 {/* Header */}
-                <h1 className="flex justify-center text-[22.5px] md:text-[36px] font-bold text-gray-900 mb-[18px] md:mb-[28px]">Shopping Bag</h1>
+                <StickyHeader title="Shopping Bag" />
                 {bagItems.length > 0 ? (
                     <div className="flex flex-col lg:flex-row gap-8">
                         
