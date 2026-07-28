@@ -23,8 +23,6 @@ interface Address {
 }
 
 export default function CheckoutIndex({ auth, bagItems, addresses = [] }: PageProps & { bagItems: BagItem[], addresses?: Address[] }) {
-    const { razorpayKey } = usePage<PageProps & { razorpayKey: string }>().props;
-
     // Calculate order totals
     const subtotal = bagItems.reduce((total, item) => total + ((item.sales_price || item.price) * item.pivot.quantity), 0);
     const shipping = 50;
@@ -79,7 +77,7 @@ export default function CheckoutIndex({ auth, bagItems, addresses = [] }: PagePr
 
             // 3. Configure the Razorpay Popup
             const options = {
-                key: razorpayKey,
+                key: import.meta.env.VITE_RAZORPAY_KEY,
                 amount: amount,
                 currency: "INR",
                 name: "Cutie McPretty",
