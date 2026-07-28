@@ -92,6 +92,7 @@ export default function ProductCarousal({ products, userBagQuantities = {} }: Ca
                                                         src={imgUrl} 
                                                         alt={`${product.name} - Angle ${index + 1}`} 
                                                         className="h-full w-full object-cover" 
+                                                        loading="lazy"
                                                     />
                                                 ))}
                                             </Carousel>

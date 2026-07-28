@@ -38,12 +38,12 @@ export default function Storefront({ auth, saleProducts, newProducts }: Storefro
                 <div className="w-full h-[40vh] sm:h-[50vh] md:h-[80vh] [&_.rounded-lg]:rounded-none"> {/* Override Flowbite's default rounded corners */}
                     <Carousel>
                         <img 
-                            src="/images/e-traditional.png" 
+                            src="/images/e-traditional.webp" 
                             alt="wome in traditional" 
                             className="w-full h-full object-contain md:object-cover object-center md:object-top" 
                         />
                         <img 
-                            src="/images/e-western.png" 
+                            src="/images/e-western.webp" 
                             alt="women in western" 
                             className="w-full h-full object-contain md:object-cover object-center md:object-top"
                         />
