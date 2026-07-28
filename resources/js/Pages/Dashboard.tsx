@@ -42,16 +42,16 @@ export default function Dashboard({ auth, addresses = [], orders = [] }: Dashboa
                 <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                     
                     {/* Main content */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="mt-5 grid grid-cols-1 lg:grid-cols-3 gap-8 ">
                         
                         {/* Order history */}
-                        <div className="lg:col-span-2 space-y-4">
+                        <div className="lg:col-span-2 space-y-4" >
                             <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">Order History</h3>
                             
                             {orders.length > 0 ? (
                                 <div className="flex flex-col gap-4">
                                     {orders.map((order) => (
-                                        <div key={order.id} className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg border border-red-300 p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+                                        <div key={order.id} className="bg-white overflow-hidden shadow-sm rounded-lg border border-red-300 p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
                                             <div>
                                                 <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Order #{order.order_id}</p>
                                                 <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
@@ -68,7 +68,7 @@ export default function Dashboard({ auth, addresses = [], orders = [] }: Dashboa
                                     ))}
                                 </div>
                             ) : (
-                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-8 text-center text-gray-500 dark:text-gray-400">
+                                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-11 text-center text-gray-500 dark:text-gray-400 border border-rose-300 rounded-lg">
                                     You haven't placed any orders yet. Go to the store to check out products!
                                 </div>
                             )}
@@ -81,7 +81,7 @@ export default function Dashboard({ auth, addresses = [], orders = [] }: Dashboa
                             {addresses.length > 0 ? (
                                 <div className="space-y-4">
                                     {addresses.map((address) => (
-                                        <div key={address.id} className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg border border-red-300 p-4 sm:p-6">
+                                        <div key={address.id} className="bg-white overflow-hidden shadow-sm rounded-lg border border-red-300 p-4 sm:p-6">
                                             <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2">{address.full_name}</h4>
                                             <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                                                 <p>{address.address}</p>
@@ -92,7 +92,7 @@ export default function Dashboard({ auth, addresses = [], orders = [] }: Dashboa
                                     ))}
                                 </div>
                             ) : (
-                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 text-sm text-gray-500 dark:text-gray-400">
+                                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 text-sm text-gray-500 dark:text-gray-400 border border-rose-300 rounded-lg">
                                     No addresses saved. Your shipping details will be saved here automatically after your first order.
                                 </div>
                             )}

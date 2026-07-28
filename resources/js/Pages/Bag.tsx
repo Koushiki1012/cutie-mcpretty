@@ -137,7 +137,7 @@ export default function Bag({ auth, bagItems }: BagPageProps) {
                     </div>
                 ) : (
                     /* Empty Bag */
-                    <div className="text-center py-10 md:py-20 bg-white border border-rose-200 rounded-lg shadow-sm">
+                    <div className="text-center py-10 md:py-20 bg-white border border-rose-300 rounded-lg shadow-sm">
                         <p className="text-sm md:text-base text-gray-500 mb-4">Looks like you haven't added anything to your bag yet.</p>
                         <Link href="/">
                             <PrimaryButton className="text-xs md:text-sm">Continue Shopping</PrimaryButton>

@@ -128,7 +128,7 @@ export default function CheckoutIndex({ auth, bagItems, addresses = [] }: PagePr
 
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Shipping details */}
-                    <div className="flex-1 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                    <div className="flex-1 bg-white p-6 rounded-lg shadow-sm border border-rose-300">
                         
                         {/* Saved addresses */}
                         {addresses.length > 0 && (
@@ -166,7 +166,7 @@ export default function CheckoutIndex({ auth, bagItems, addresses = [] }: PagePr
                             </div>
                         )}
 
-                        <h2 className="text-xl font-bold text-gray-900 mb-6">Shipping Details</h2>
+                        <h2 className="text-xl font-bold text-gray-900 mb-6">Shipping Details <span className="text-base font-light">(Will be saved after first order)</span></h2>
                         
                         <form id="checkout-form" onSubmit={submitOrder} className="space-y-4">
                             <div>
@@ -199,7 +199,7 @@ export default function CheckoutIndex({ auth, bagItems, addresses = [] }: PagePr
 
                     {/* Order summary */}
                     <div className="lg:w-96 flex-shrink-0">
-                        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 sticky top-[180px] md:top-[220px]">
+                        <div className="bg-white p-6 rounded-lg shadow-sm border border-rose-300 sticky top-[180px] md:top-[220px]">
                             <h2 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h2>
                             
                             <div className="space-y-3 border-b border-gray-100 pb-4 mb-4 max-h-60 overflow-y-auto">
@@ -226,7 +226,10 @@ export default function CheckoutIndex({ auth, bagItems, addresses = [] }: PagePr
                                 <span>Total To Pay</span>
                                 <span>₹{grandTotal}</span>
                             </div>
-
+                            <div className="space-y-2 text-sm text-gray-600 border-b border-gray-100 pb-4">
+                                <p>Please copy this demo card number for demo payment -- 4100 2800 0000 1007</p>
+                                <p>Put a future date, and random numbers for CVV</p>
+                            </div>
                             <PrimaryButton 
                                 type="submit"
                                 form="checkout-form"
