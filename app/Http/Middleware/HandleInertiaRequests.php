@@ -45,7 +45,7 @@ class HandleInertiaRequests extends Middleware
             'bagCount' => $request->user()
                 ? $request->user()->bagItems()->sum('quantity') // sum is better for bags!
                 : 0,
-            'razorpayKey' => env('RAZORPAY_KEY'),
+            'razorpayKey' => config('services.razorpay.key'),
         ];
     }
 }

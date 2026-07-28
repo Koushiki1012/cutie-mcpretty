@@ -41,7 +41,7 @@ class CheckoutController extends Controller
         $total = $subtotal + $shipping;
 
         // Create Razorpay order
-        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
 
         $orderData = [
             'receipt' => 'rcptid_' . time(),
@@ -59,7 +59,7 @@ class CheckoutController extends Controller
 
     public function verifyPayment(Request $request)
     {
-        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
 
         try {
             // Verify Razorpay payment signature
