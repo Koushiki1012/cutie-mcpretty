@@ -13,6 +13,8 @@ services:
       context: .
     env_file:
       - .env
+    environment:
+      - PORT=80
     ports:
       - "5074:80"
 # The commented out section below is an example of how to define a PostgreSQL
