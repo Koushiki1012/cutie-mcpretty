@@ -36,22 +36,26 @@ export default function Storefront({ auth, saleProducts, newProducts }: Storefro
             <main className="flex-grow w-full pt-0">
                 {/* Banner Images */}
                 {/* Dropped mobile height to 25vh to match image proportions, keeping desktop at 80vh */}
-                <div className="w-full h-[25vh] sm:h-[50vh] md:h-[80vh] [&_.rounded-lg]:rounded-none"> {/* Override Flowbite's default rounded corners */}
+                <div className="w-full h-[25vh] sm:h-[50vh] md:h-[80vh] [&_.rounded-lg]:rounded-none"> 
+                {/* Override Flowbite's default rounded corners */} 
                     <Carousel> 
-                        <img
-                            src="/images/e-traditional.webp" 
-                            alt="women in traditional" 
-                            className="w-full h-full object-cover object-center md:object-top"
-                            decoding="sync"
+                        <img 
+                        src="/images/e-traditional.webp" 
+                        alt="women in traditional" 
+                        className="w-full h-full object-cover object-center md:object-top transform-gpu" 
+                        fetchPriority="high"
+                        decoding="async"
                         /> 
-                        <img
-                            src="/images/e-western.webp" 
-                            alt="women in western" 
-                            className="w-full h-full object-cover object-center md:object-top" 
-                            decoding="async"
+                        <img 
+                        src="/images/e-western.webp" 
+                        alt="women in western" 
+                        className="w-full h-full object-cover object-center md:object-top" 
+                        loading="lazy" 
+                        decoding="async" 
                         /> 
-                    </Carousel>
+                    </Carousel> 
                 </div>
+
                 <div className="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h2 className="text-[20px] md:text-[36px] font-bold text-gray-900 mb-[16px] md:mb-[28px] text-center">Items on Sale</h2>
                     <ProductCarousal products={saleProducts} />
