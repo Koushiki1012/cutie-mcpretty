@@ -38,17 +38,19 @@ export default function Storefront({ auth, saleProducts, newProducts }: Storefro
                 {/* Dropped mobile height to 25vh to match image proportions, keeping desktop at 80vh */}
                 <div className="w-full h-[25vh] sm:h-[50vh] md:h-[80vh] [&_.rounded-lg]:rounded-none"> {/* Override Flowbite's default rounded corners */}
                     <Carousel> 
-                        <img 
+                        <img
                             src="/images/e-traditional.webp" 
                             alt="women in traditional" 
-                            className="w-full h-full object-cover object-center md:object-top" 
+                            className="w-full h-full object-cover object-center md:object-top"
+                            decoding="sync"
                         /> 
-                        <img 
+                        <img
                             src="/images/e-western.webp" 
                             alt="women in western" 
                             className="w-full h-full object-cover object-center md:object-top" 
+                            decoding="async"
                         /> 
-                    </Carousel> 
+                    </Carousel>
                 </div>
                 <div className="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h2 className="text-[20px] md:text-[36px] font-bold text-gray-900 mb-[16px] md:mb-[28px] text-center">Items on Sale</h2>
