@@ -1,4 +1,4 @@
-# cutie-mcpretty
+# Cutie-Mcpretty
 
 A modern, full-stack fashion e-commerce web application built with **Laravel 13**, **React 18**, and **Inertia.js**. Features an AI-powered shopping assistant, Razorpay payment integration, wishlists, a shopping bag, and a curated catalogue of Traditional, Western, and Accessories categories.
 
