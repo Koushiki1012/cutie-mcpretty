@@ -138,7 +138,7 @@ The app will be available at **http://localhost:5074**.
 
 ---
 
-## ⚡ One-Command Setup
+## Setup
 
 The `setup` Composer script automates the full installation:
 
