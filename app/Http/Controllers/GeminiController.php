@@ -20,16 +20,25 @@ class GeminiController extends Controller
 
         try {
             // Compact catalog cached for 1 hour — only first image, short keys
+            // Guard: never cache an empty result (e.g. DB not ready yet)
             $products = Cache::remember('gemini_catalog', now()->addHours(1), function () {
-                return Product::select('name', 'price', 'sales_price', 'images', 'category', 'subcategory')
-                    ->get()
-                    ->map(fn($p) => [
-                        'name' => $p->name,
-                        'price' => $p->price,
-                        'sale' => $p->sales_price,
-                        'cat' => $p->category . '/' . $p->subcategory,
-                        'img' => $p->images[0] ?? null,
-                    ]);
+                $rows = Product::select('name', 'price', 'sales_price', 'images', 'category', 'subcategory')
+                    ->get();
+
+                if ($rows->isEmpty()) {
+                    // Returning null prevents Cache::remember from storing the value
+                    return null;
+                }
+
+                $baseUrl = rtrim(config('app.url'), '/');
+
+                return $rows->map(fn($p) => [
+                    'name'  => $p->name,
+                    'price' => $p->price,
+                    'sale'  => $p->sales_price,
+                    'cat'   => $p->category . '/' . $p->subcategory,
+                    'img'   => isset($p->images[0]) ? $baseUrl . $p->images[0] : null,
+                ]);
             });
 
             // Grab the history — keep last 3 back and forth as context

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface Product {
     name: string;
@@ -94,7 +95,21 @@ export default function GeminiChat({ products }: GeminiChatProps) {
                                     : 'bg-white border border-red-50 shadow-sm text-gray-800 prose prose-sm'
                                 }`}>
                                     {msg.role === 'model' ? (
-                                        <ReactMarkdown>{msg.text}</ReactMarkdown>
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                img: ({ src, alt }) => (
+                                                    <img
+                                                        src={src}
+                                                        alt={alt ?? ''}
+                                                        className="mt-2 w-full max-w-[220px] rounded-lg object-cover"
+                                                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                                                    />
+                                                ),
+                                            }}
+                                        >
+                                            {msg.text}
+                                        </ReactMarkdown>
                                     ) : (
                                         msg.text
                                     )}
