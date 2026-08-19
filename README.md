@@ -1,25 +1,25 @@
-# 🛍️ cutie-mcpretty
+# cutie-mcpretty
 
 A modern, full-stack fashion e-commerce web application built with **Laravel 13**, **React 18**, and **Inertia.js**. Features an AI-powered shopping assistant, Razorpay payment integration, wishlists, a shopping bag, and a curated catalogue of Traditional, Western, and Accessories categories.
 
 ---
 
-## ✨ Features
+##  Features
 
-- 🏬 **Storefront** — Curated homepage showcasing new arrivals and sale products
-- 👗 **Product Categories** — Traditional (Festive, Classics, Fusion), Western (Tops, Dresses, Bottoms), Accessories (Purses, Footwear, Scarves), and a Bonus section
-- 🔍 **Search** — Full-text product search across the catalogue
-- 🤖 **AI Shopping Assistant** — Powered by Google Gemini to help customers find what they're looking for
-- ❤️ **Wishlist** — Save favourite items (requires login)
-- 🛒 **Shopping Bag** — Add, update quantity, and remove items (requires login)
-- 💳 **Checkout with Razorpay** — Secure payment processing with order verification
-- 👤 **User Accounts** — Registration, login, profile management, and order history dashboard
-- 🌙 **Dark Mode** — Full dark mode support
-- ⚡ **SSR** — Server-Side Rendering via Inertia.js for fast initial page loads
+-  **Storefront** — Curated homepage showcasing new arrivals and sale products
+-  **Product Categories** — Traditional (Festive, Classics, Fusion), Western (Tops, Dresses, Bottoms), Accessories (Purses, Footwear, Scarves), and a Bonus section
+-  **Search** — Full-text product search across the catalogue
+-  **AI Shopping Assistant** — Powered by Google Gemini to help customers find what they're looking for
+-  **Wishlist** — Save favourite items (requires login)
+-  **Shopping Bag** — Add, update quantity, and remove items (requires login)
+-  **Checkout with Razorpay** — Secure payment processing with order verification
+-  **User Accounts** — Registration, login, profile management, and order history dashboard
+-  **Dark Mode** — Full dark mode support
+-  **SSR** — Server-Side Rendering via Inertia.js for fast initial page loads
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -36,7 +36,7 @@ A modern, full-stack fashion e-commerce web application built with **Laravel 13*
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -123,7 +123,7 @@ Visit http://localhost:8000 in your browser.
 
 ---
 
-## 🐳 Running with Docker
+##  Running with Docker
 
 A multi-stage `Dockerfile` and `compose.yaml` are included for containerized deployments.
 
@@ -150,7 +150,7 @@ This runs: `composer install` → copy `.env` → `key:generate` → `migrate` �
 
 ---
 
-## 🧪 Running Tests
+##  Running Tests
 
 ```bash
 composer test
@@ -160,7 +160,7 @@ php artisan test
 
 ---
 
-## 🗂️ Project Structure
+##  Project Structure
 
 ```
 cutie-mcpretty/
@@ -186,6 +186,6 @@ cutie-mcpretty/
 
 ---
 
-## 📄 License
+##  License
 
 This project is open-source and available under the [MIT License](https://opensource.org/licenses/MIT).
